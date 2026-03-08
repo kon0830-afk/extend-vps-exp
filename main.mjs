@@ -31,17 +31,22 @@ try {
     await page.locator('#user_password').fill(process.env.PASSWORD)
     await page.locator('text=ログインする').click()
     await page.waitForNavigation({ waitUntil: 'networkidle2' })
-    await page.goto('https://secure.xserver.ne.jp/xapanel/xvps/index', { waitUntil: 'networkidle2' })    //2026/3/8追加
-    await page.locator('a[href^="/xapanel/xvps/server/detail?id="]').click()
+    const targetUrl = "https://secure.xserver.ne.jp/xapanel/xvps/server/freevps/extend/index?id_vps=40148846"
+    
+    // 直接目的のページへジャンプ
+    await page.goto(targetUrl, { waitUntil: 'networkidle2', timeout: 60000 })
+    
+//    await page.goto('https://secure.xserver.ne.jp/xapanel/xvps/index', { waitUntil: 'networkidle2' })    //2026/3/8追加
+//    await page.locator('a[href^="/xapanel/xvps/server/detail?id="]').click()
 //    await page.locator('text=更新する').click()
 //    const updateBtn = 'a[href*="freevps/extend"]'
 //    await page.waitForSelector(updateBtn, { visible: true, timeout: 30000 })
 //    await page.click(updateBtn)
-    await page.waitForSelector(detailLink, { visible: true, timeout: 30000 });
+//    await page.waitForSelector(detailLink, { visible: true, timeout: 30000 });
     
     // 一番確実なのは、最初に見つかった「有効な」リンクをクリックすることです
-    await page.$$eval(detailLink, els => els[0].click());    
-    await page.waitForNavigation({ waitUntil: 'networkidle2' }).catch(() => {});
+//    await page.$$eval(detailLink, els => els[0].click());    
+//    await page.waitForNavigation({ waitUntil: 'networkidle2' }).catch(() => {});
     
     await page.locator('text=引き続き無料VPSの利用を継続する').click()
     await page.waitForNavigation({ waitUntil: 'networkidle2' })
