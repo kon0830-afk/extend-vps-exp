@@ -33,7 +33,11 @@ try {
     await page.waitForNavigation({ waitUntil: 'networkidle2' })
     await page.goto('https://secure.xserver.ne.jp/xapanel/xvps/index', { waitUntil: 'networkidle2' })    //2026/3/8追加
     await page.locator('a[href^="/xapanel/xvps/server/detail?id="]').click()
-    await page.locator('text=更新する').click()
+//    await page.locator('text=更新する').click()
+    const updateBtn = 'a[href*="freevps/extend"]'
+    await page.waitForSelector(updateBtn, { visible: true, timeout: 30000 })
+    await page.click(updateBtn)
+    
     await page.locator('text=引き続き無料VPSの利用を継続する').click()
     await page.waitForNavigation({ waitUntil: 'networkidle2' })
     const body = await page.$eval('img[src^="data:"]', img => img.src)
